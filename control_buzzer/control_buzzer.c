@@ -57,10 +57,10 @@ int meldy_freq[8] = {261, 293, 329, 349, 392, 440, 493, 523};
 #define MELDY_DO_H 523
 
 struct sys_pwm {
-	int port;
-	int channel;
-	int enable;
-	char *con_buf;
+    int port;
+    int channel;
+    int enable;
+    char *con_buf;
     char *con_path;
 };
 
@@ -305,30 +305,30 @@ int main(int argc, char** argv)
         pwm_chan_export(&control_pwm);
     }
 
-	control_pwm.enable = 0;
-	pwm_set_enable(&control_pwm);
+    control_pwm.enable = 0;
+    pwm_set_enable(&control_pwm);
 
-	period = GB / freq;
-	pwm_set_duty(&control_pwm, DEFAULT_DUTY);
-	pwm_set_period(&control_pwm, DEFAULT_PERIOD);
+    period = GB / freq;
+    pwm_set_duty(&control_pwm, DEFAULT_DUTY);
+    pwm_set_period(&control_pwm, DEFAULT_PERIOD);
 
     if (set_period == 1) {
-		/*
-		 * period = (1 / freq) * 10^9
-		 * period(ns) = (1 / freq)
-		 */
+        /*
+        * period = (1 / freq) * 10^9
+        * period(ns) = (1 / freq)
+        */
         pwm_set_period(&control_pwm, period);
-	}
+    }
 
     if (set_duty == 1) {
-		/*
-		 * duty = period * proportion(%)
-		 */
+        /*
+        * duty = period * proportion(%)
+        */
         pwm_set_duty(&control_pwm, (duty * period) / 100);
-	}
+    }
 
-	control_pwm.enable = 1;
-	pwm_set_enable(&control_pwm);
+    control_pwm.enable = 1;
+    pwm_set_enable(&control_pwm);
 
     return 0;
 }
@@ -336,18 +336,18 @@ int main(int argc, char** argv)
 
 void set_pwm(int freq, int duty)
 {
-	struct sys_pwm control_pwm;
-	char pwm_con_buf[50];
-	char pwm_path[50];
-	int period, ret;
+    struct sys_pwm control_pwm;
+    char pwm_con_buf[50];
+    char pwm_path[50];
+    int period, ret;
 
-	printf("%s-freq %d\n", __func__, freq);
+    printf("%s-freq %d\n", __func__, freq);
     control_pwm.port = 2;
     control_pwm.channel = 0;
     control_pwm.con_buf = &pwm_con_buf[0];
 
     sprintf(pwm_path, "%s%d/pwm%d", DEVF,
-		control_pwm.port, control_pwm.channel);
+    control_pwm.port, control_pwm.channel);
     control_pwm.con_path = pwm_path;
 
     ret = access(pwm_path, R_OK | W_OK);
@@ -355,107 +355,107 @@ void set_pwm(int freq, int duty)
         pwm_chan_export(&control_pwm);
     }
 
-	control_pwm.enable = 0;
-	pwm_set_enable(&control_pwm);
+    control_pwm.enable = 0;
+    pwm_set_enable(&control_pwm);
 
-	period = GB / freq;
-	pwm_set_duty(&control_pwm, DEFAULT_DUTY);
-	pwm_set_period(&control_pwm, DEFAULT_PERIOD);
+    period = GB / freq;
+    pwm_set_duty(&control_pwm, DEFAULT_DUTY);
+    pwm_set_period(&control_pwm, DEFAULT_PERIOD);
     pwm_set_period(&control_pwm, period);
     pwm_set_duty(&control_pwm, (duty * period) / 100);
 
-	control_pwm.enable = 1;
-	pwm_set_enable(&control_pwm);
+    control_pwm.enable = 1;
+    pwm_set_enable(&control_pwm);
 
 }
 
 void enable_buzzer(int enable)
 {
-	struct sys_pwm control_pwm;
-	char pwm_con_buf[50];
-	char pwm_path[50];
-	int period, ret;
+    struct sys_pwm control_pwm;
+    char pwm_con_buf[50];
+    char pwm_path[50];
+    int period, ret;
 
     control_pwm.port = 2;
     control_pwm.channel = 0;
     control_pwm.con_buf = &pwm_con_buf[0];
 
     sprintf(pwm_path, "%s%d/pwm%d", DEVF,
-		control_pwm.port, control_pwm.channel);
+    control_pwm.port, control_pwm.channel);
     control_pwm.con_path = pwm_path;
-	control_pwm.enable = enable;
+    control_pwm.enable = enable;
 
     ret = access(pwm_path, R_OK | W_OK);
     if (ret) {
         pwm_chan_export(&control_pwm);
     }
 
-	pwm_set_enable(&control_pwm);
+    pwm_set_enable(&control_pwm);
 }
 
 void play_ff_voctory()
 {
-	set_pwm(MELDY_DO_H, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_DO_H, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_DO_H, 10);
-	usleep(200000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_DO_H, 10);
+    usleep(200000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_DO_H, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_DO_H, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_SO, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_SO, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_LA, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_LA, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_DO_H, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_DO_H, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 
-	set_pwm(MELDY_SI, 10);
-	usleep(100000);
-	enable_buzzer(0);
-	usleep(10000);
+    set_pwm(MELDY_SI, 10);
+    usleep(100000);
+    enable_buzzer(0);
+    usleep(10000);
 
-	set_pwm(MELDY_DO_H, 10);
-	usleep(500000);
-	enable_buzzer(0);
-	usleep(100000);
+    set_pwm(MELDY_DO_H, 10);
+    usleep(500000);
+    enable_buzzer(0);
+    usleep(100000);
 }
 
 void for_sys_int(int sig)
 {
-	printf("for_sys_int\n");
-	enable_buzzer(0);
-	exit(0);
+    printf("for_sys_int\n");
+    enable_buzzer(0);
+    exit(0);
 }
 
 int main(int argc, char** argv)
 {
-	int i;
+    int i;
 
-	signal(SIGINT, for_sys_int);
-	enable_buzzer(1);
-	for (i = 0; i < 8; i++) {
-		set_pwm(meldy_freq[i], 10);
-		usleep(300000);
-	}
-	enable_buzzer(0);
+    signal(SIGINT, for_sys_int);
+    enable_buzzer(1);
+    for (i = 0; i < 8; i++) {
+        set_pwm(meldy_freq[i], 10);
+        usleep(300000);
+    }
+    enable_buzzer(0);
 
-	return 0;
+    return 0;
 }
 #endif
 
